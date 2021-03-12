@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+
+{% block content %}
+  <div id="core-page">
+    <template v-if="currentUser && !currentUser.feeds_quantity">
+      <div class="uk-text-center">
+        <img src="{% static 'images/newspaper.svg' %}" width="220px" />
+        <h2 class="uk-text-bold uk-margin-remove-bottom">Create your first Feed</h2>
+        <p class="uk-margin-small-top">¡Start reading your favorite blogs!</p>
+
+        <a class="uk-button uk-button-primary uk-margin-top" href="#add-new-feed-modal" uk-toggle>+ Add a new Feed</a>
+      </div>
+    </template>
+    <template v-else>
+      <p>Mostrar los feeds...</p>
+    </template>
+
+    <new-feed-modal></new-feed-modal>
+  </div>
+{% endblock content %}
+
+{% block javascript %}
+  <script>
+    var token = "{{ csrf_token }}";
+    var currentUserId = "{{ request.user.id }}";
+  </script>
+  <script src="{% static 'js/components/newFeedModal.js' %}"></script>
+  <script src="{% static 'js/parents/core.js' %}"></script>
+{% endblock javascript %}
