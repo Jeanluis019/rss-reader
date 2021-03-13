@@ -1,0 +1,43 @@
+.subscribed-feeds-section {
+  .subscribed-feeds-list {
+    display: inline-flex;
+    flex-wrap: wrap;
+
+    .subscribed-feed {
+      background-color: darkgray;
+      border-radius: 20px;
+      padding: 5px 15px;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      &.active {
+        background: #39f;
+      }
+    }
+  }
+}
+
+.feed-posts-section {
+  .feed-post .uk-card:hover {
+    cursor: pointer;
+  }
+}
+
+#read-post-modal {
+  .uk-modal-close-full {
+    position: sticky;
+
+    svg {
+      position: absolute;
+      left: 96vw;
+      top: 36px;
+    }
+  }
+}

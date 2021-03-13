@@ -1,4 +1,5 @@
 Vue.component('new-feed-modal', {
+  props: ['current-user-id'],
   data() {
     return {
       name: null,
@@ -50,7 +51,7 @@ Vue.component('new-feed-modal', {
   methods: {
     addNewFeed() {
       let data = {
-        user: currentUserId,
+        user: this.currentUserId,
         name: this.name,
         category: this.category,
         url: this.url

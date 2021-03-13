@@ -1,7 +1,6 @@
-from django.shortcuts import render
-from django.views import View
-from django.contrib.auth.mixins import LoginRequiredMixin
-
+from django.shortcuts import render # noqa
+from django.views import View # noqa    
+from django.contrib.auth.mixins import LoginRequiredMixin # noqa
 
 class IndexView(LoginRequiredMixin, View):
     template_name = 'feeds/index.html'

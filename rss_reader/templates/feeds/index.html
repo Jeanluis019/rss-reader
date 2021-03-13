@@ -3,7 +3,7 @@
 
 {% block content %}
   <div id="core-page">
-    <template v-if="currentUser && !currentUser.feeds_quantity">
+    <template v-if="currentUser && !subscribedFeeds">
       <div class="uk-text-center">
         <img src="{% static 'images/newspaper.svg' %}" width="220px" />
         <h2 class="uk-text-bold uk-margin-remove-bottom">Create your first Feed</h2>
@@ -13,18 +13,44 @@
       </div>
     </template>
     <template v-else>
-      <p>Mostrar los feeds...</p>
+      <subscribed-feeds-section 
+        :subscribed-feeds="subscribedFeeds"
+        :selected-feed-id="selectedFeed.id"
+        v-on:get-feed-posts="selectFeed">
+      </subscribed-feeds-section>
+      
+      <h2>Latest posts</h2>
+
+      <div class="feed-posts-section uk-margin-large-bottom uk-grid-match" uk-grid>
+        <feed-post
+          class="uk-width-1-2@s uk-width-1-3@m"
+          v-for="post in selectedFeed.posts"
+          :key="post.id"
+          :post="post"
+          v-on:read-post="selectPostToRead"
+        >
+        </feed-post>
+      </div>
     </template>
 
-    <new-feed-modal></new-feed-modal>
+    <read-post-modal
+      v-if="selectedPost"
+      :post="selectedPost">
+    </read-post-modal>
+
+    <new-feed-modal
+      current-user-id="currentUser.id">
+    </new-feed-modal>
   </div>
 {% endblock content %}
 
 {% block javascript %}
   <script>
     var token = "{{ csrf_token }}";
-    var currentUserId = "{{ request.user.id }}";
   </script>
   <script src="{% static 'js/components/newFeedModal.js' %}"></script>
+  <script src="{% static 'js/components/subscribedFeedsSection.js' %}"></script>
+  <script src="{% static 'js/components/readPostModal.js' %}"></script>
+  <script src="{% static 'js/components/feedPost.js' %}"></script>
   <script src="{% static 'js/parents/core.js' %}"></script>
 {% endblock javascript %}

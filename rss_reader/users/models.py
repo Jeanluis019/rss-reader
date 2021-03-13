@@ -20,6 +20,3 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"username": self.username})
-
-    def get_feeds_quantity(self):
-        return self.feeds.count()

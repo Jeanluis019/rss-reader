@@ -1,4 +1,6 @@
-from rest_framework import serializers
+import feedparser # noqa
+
+from rest_framework import serializers # noqa
 
 from rss_reader.feeds.models import Feed
 
