@@ -85,3 +85,7 @@ class DeleteFeedTest(FeedTestCaseMixin, APITestCase):
         self.client.delete(f"/api/feeds/{feed_data.get('id')}/")
         self.assertFalse(
             Feed.objects.filter(id=feed_data.get('id')).exists())
+
+
+# TODO: Create a test for validate unique_together fields are working
+# TODO: Save the Feeds URL API in a variable

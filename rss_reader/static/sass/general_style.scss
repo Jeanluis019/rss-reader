@@ -1,5 +1,17 @@
 body {
-  // background-color: white;
+  background-color: #F6FAFF;
+  min-height: 100vh;
+}
+
+.navbar-container {
+  box-shadow: 0 0 20px 0 rgba(62,28,131,0.1);
+  -webkit-box-shadow: 0 0 20px 0 rgba(62,28,131,0.1);
+  background-color: $white;
+}
+
+.uk-navbar {
+  background: $white !important;
+  background-color: $white !important;
 }
 
 .uk-input, .uk-select, .uk-button {
@@ -10,4 +22,10 @@ body {
   text-transform: initial;
   font-weight: 600;
   font-size: 15px;
+
+  .loading-bar {
+    width: 20px;
+    height: 20px;
+    margin: 9px;
+  }
 }

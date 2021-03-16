@@ -13,13 +13,19 @@
       </div>
     </template>
     <template v-else>
-      <subscribed-feeds-section 
-        :subscribed-feeds="subscribedFeeds"
-        :selected-feed-id="selectedFeed.id"
-        v-on:get-feed-posts="selectFeed">
-      </subscribed-feeds-section>
+      <div class="uk-grid uk-child-width-1-1 uk-child-width-1-2@m">
+        <subscribed-feeds-section 
+          :subscribed-feeds="subscribedFeeds"
+          :selected-feed-id="selectedFeed.id"
+          v-on:get-feed-posts="selectFeed">
+        </subscribed-feeds-section>
+
+        <div class="uk-text-right">
+          <a class="uk-button uk-button-primary" href="#add-new-feed-modal" uk-toggle>+ Add a new Feed</a>
+        </div>
+      </div>
       
-      <h2>Latest posts</h2>
+      <h2 class="uk-margin-medium-top">Latest posts</h2>
 
       <div class="feed-posts-section uk-margin-large-bottom uk-grid-match" uk-grid>
         <feed-post
@@ -39,7 +45,8 @@
     </read-post-modal>
 
     <new-feed-modal
-      current-user-id="currentUser.id">
+      v-if="currentUser"
+      :current-user-id="currentUser.id">
     </new-feed-modal>
   </div>
 {% endblock content %}

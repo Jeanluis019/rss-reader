@@ -1,3 +1,16 @@
+body {
+  background-color: #F6FAFF;
+  min-height: 100vh; }
+
+.navbar-container {
+  box-shadow: 0 0 20px 0 rgba(62, 28, 131, 0.1);
+  -webkit-box-shadow: 0 0 20px 0 rgba(62, 28, 131, 0.1);
+  background-color: #fff; }
+
+.uk-navbar {
+  background: #fff !important;
+  background-color: #fff !important; }
+
 .uk-input, .uk-select, .uk-button {
   border-radius: 4px; }
 
@@ -5,6 +18,10 @@
   text-transform: initial;
   font-weight: 600;
   font-size: 15px; }
+  .uk-button .loading-bar {
+    width: 20px;
+    height: 20px;
+    margin: 9px; }
 
 .subscribed-feeds-section .subscribed-feeds-list {
   display: -webkit-inline-box;
@@ -35,3 +52,30 @@
     position: absolute;
     left: 96vw;
     top: 36px; }
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+.loading-bar {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border: 4px solid grey;
+  border: .25rem solid grey;
+  border-top-color: #fff;
+  -webkit-animation: spin 1s infinite linear;
+          animation: spin 1s infinite linear;
+  margin: auto; }
