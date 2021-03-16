@@ -76,6 +76,14 @@ Vue.component('new-feed-modal', {
 
         this.$http.post('/api/feeds/', this.feed).then((response) => {
           this.isSendingData = false;
+
+          if (response.ok) {
+            this.$emit('feed:add', response.data);
+            UIkit.modal('#add-new-feed-modal').hide();
+            UIkit.notification({message: 'Feed added!', status: 'primary'});
+
+            this.createNewFeedObject();
+          }
         }).catch((response) => {
           this.isSendingData = false;
           for (let k in response.data) {

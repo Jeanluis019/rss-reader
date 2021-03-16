@@ -3,10 +3,10 @@
 
 {% block content %}
   <div id="core-page">
-    <template v-if="currentUser && !subscribedFeeds">
-      <div class="uk-text-center">
+    <template v-if="currentUser && subscribedFeeds.length == 0">
+      <div class="uk-text-center uk-margin-large-top">
         <img src="{% static 'images/newspaper.svg' %}" width="220px" />
-        <h2 class="uk-text-bold uk-margin-remove-bottom">Create your first Feed</h2>
+        <h2 class="uk-text-bold uk-margin-top uk-margin-remove-bottom">Create your first Feed</h2>
         <p class="uk-margin-small-top">¡Start reading your favorite blogs!</p>
 
         <a class="uk-button uk-button-primary uk-margin-top" href="#add-new-feed-modal" uk-toggle>+ Add a new Feed</a>
@@ -46,7 +46,8 @@
 
     <new-feed-modal
       v-if="currentUser"
-      :current-user-id="currentUser.id">
+      :current-user-id="currentUser.id"
+      v-on:feed:add="addFeed">
     </new-feed-modal>
   </div>
 {% endblock content %}

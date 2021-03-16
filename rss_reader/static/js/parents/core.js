@@ -22,9 +22,10 @@ new Vue({
     getSubscribedFeeds() {
       this.$http.get('/api/feeds/').then((response) => {
         this.subscribedFeeds = response.data;
-
         // Select the first feed by default
-        this.selectFeed(this.subscribedFeeds[0].id);
+        if (this.subscribedFeeds.length > 0) {
+          this.selectFeed(this.subscribedFeeds[0].id);
+        }
       });
     },
     selectFeed(feedId) {
@@ -37,6 +38,10 @@ new Vue({
       setTimeout(() => {
         UIkit.modal('#read-post-modal').show();
       }, 100);
+    },
+    addFeed(feed) {
+      this.subscribedFeeds.push(feed);
+      this.selectFeed(feed.id);
     }
   }
 })
