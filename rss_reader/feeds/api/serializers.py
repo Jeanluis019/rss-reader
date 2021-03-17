@@ -1,5 +1,7 @@
 import feedparser # noqa
 
+from asgiref.sync import async_to_sync # noqa
+
 from rest_framework import serializers # noqa
 from rest_framework.validators import UniqueTogetherValidator # noqa
 
@@ -16,12 +18,15 @@ class FeedSerializer(serializers.ModelSerializer):
         """
         Check that the feed's url is valid.
         """
-        user = User.objects.get(id=int(self.initial_data.get('user')))
+        user_id = int(self.initial_data.get('user'))
+        user = User.objects.get(id=user_id)
 
-        if not Feed.is_unique_together_valid(user, value):
+        if Feed.does_feed_exist(user, value):
             raise serializers.ValidationError(
                 'You added this Feed before.')
-        if not Feed.is_url_valid(value):
+
+        is_url_valid_sync = async_to_sync(Feed.is_url_valid)
+        if not is_url_valid_sync(value):
             raise serializers.ValidationError(
                 'This URL is invalid.')
         return value

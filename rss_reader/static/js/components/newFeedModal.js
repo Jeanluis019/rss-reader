@@ -78,7 +78,7 @@ Vue.component('new-feed-modal', {
           this.isSendingData = false;
 
           if (response.ok) {
-            this.$emit('feed:add', response.data);
+            this.$parent.getSubscribedFeeds();
             UIkit.modal('#add-new-feed-modal').hide();
             UIkit.notification({message: 'Feed added!', status: 'primary'});
 

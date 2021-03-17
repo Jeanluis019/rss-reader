@@ -11,10 +11,13 @@ from .serializers import FeedSerializer
 class FeedViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users
-    to add, update and delete feeds.
+    to get, add, update and delete Feeds.
     """
     serializer_class = FeedSerializer
     queryset = Feed.objects.all()
 
     def get_queryset(self, *args, **kwargs):
+        # Check if user's feeds needs a update
+        self.request.user.update_feed_posts()
+
         return self.queryset.filter(user=self.request.user.id)

@@ -11,7 +11,7 @@ from rss_reader.feeds.models import Feed, FeedCategory
 
 class FeedTestCaseMixin(SerializeMixin):
     """
-    Mixin for testing create, update,
+    Mixin for testing the create, update,
     and delete methods of Feeds API
     """
 
