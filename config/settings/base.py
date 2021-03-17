@@ -298,3 +298,6 @@ CORS_URLS_REGEX = r"^/api/.*$"
 
 # Time to wait for updating Feeds' posts (in hours)
 HOURS_FOR_UPDATE_POSTS = 2
+
+# How many posts should we get from the Feeds? (Default=20)
+POSTS_QUANTITY_TO_GET = env.bool("POSTS_QUANTITY_TO_GET", 20)

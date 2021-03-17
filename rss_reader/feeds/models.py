@@ -35,8 +35,6 @@ class FeedCategory(models.Model):
 
 
 class Feed(models.Model):
-    POSTS_QUANTITY_TO_GET = 20
-
     user = models.ForeignKey(
         User,
         verbose_name=_('Owner'),
@@ -77,28 +75,25 @@ class Feed(models.Model):
     @staticmethod
     async def is_url_valid(url):
         """
-        Check that the URLs that
-        users put is valid
+        Check that Feed's URL is valid and
+        log any errors if there are any.
         """
+        debug_message = (
+            f"{timezone.now()} - "
+            f"Feed's posts couldn't be updated. Feed's URL: {url}. "
+            "Reason: {error}")
+
         try:
             feed = feedparser.parse(url)
-            if feed.get('status') != status.HTTP_200_OK:
-                logger.debug(
-                    f"{timezone.now()} - "
-                    f"Feed's posts couldn't be updated. "
-                    f"Feed's URL: {url}. Status Code: {feed.get('status')}")
-                return False
-            return feed
-        except URLError as err:
-            logger.debug(
-                f"{timezone.now()} - "
-                f"Feed's posts couldn't be updated. "
-                f"Feed's URL: {url}. Reason: {err.reason}")
-        except Exception as error:
-            logger.debug(
-                f"{timezone.now()} - "
-                f"Feed's posts couldn't be updated. "
-                f"Feed's URL: {url}. Reason: {error.reason}")
+            if feed.get('status') == status.HTTP_200_OK:
+                return feed
+
+            debug_message = debug_message.replace(
+                "Reason: {error}", f"Status Code: {feed.get('status')}")
+        except (URLError, Exception) as error:
+            debug_message = debug_message.format(error=error.reason)
+
+        logger.debug(debug_message)
         return False
 
     def does_can_update_posts(self):
@@ -119,7 +114,7 @@ class Feed(models.Model):
     @sync_to_async
     def update_posts(feed_id, posts):
         feed = Feed.objects.get(id=feed_id)
-        feed.posts = posts[:Feed.POSTS_QUANTITY_TO_GET]
+        feed.posts = posts[:settings.POSTS_QUANTITY_TO_GET]
         feed.last_date_updated = timezone.now()
         feed.save()
 

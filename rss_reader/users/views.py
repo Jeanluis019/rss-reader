@@ -4,6 +4,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
+from django.contrib.auth import logout
+from django.shortcuts import redirect
 
 User = get_user_model()
 
@@ -43,3 +45,13 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 user_redirect_view = UserRedirectView.as_view()
+
+
+class LogoutView(LoginRequiredMixin, RedirectView):
+
+    def get(self, request):
+        logout(request)
+        return redirect('/')
+
+
+user_logout_view = LogoutView.as_view()

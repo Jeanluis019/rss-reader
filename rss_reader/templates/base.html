@@ -32,13 +32,27 @@
         <nav class="uk-navbar-container" uk-navbar>
           <div class="uk-navbar-left">
             <ul class="uk-navbar-nav">
-              <li class="uk-active"><a href="#">RSS Reader</a></li>
+              <li class="uk-active"><a href="/" style="font-weight:600; font-size:20px;">RSS Reader</a></li>
             </ul>
           </div>
 
           <div class="uk-navbar-right">
               <ul class="uk-navbar-nav">
-                <li class="uk-active"><a href="#">Mi Cuenta</a></li>
+                <li class="uk-active">
+                  {% if request.user.is_authenticated %}
+                    <form method="get" class="logout-form" action="{% url 'users:logout' %}">
+                      {% csrf_token %}
+
+                      {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                      {% endif %}
+
+                      <div class="button-container">
+                        <button class="uk-button uk-button-link" type="submit">Log out</button>
+                      </div>
+                    </form>
+                  {% endif %}
+                </li>
               </ul>
           </div>
         </nav>

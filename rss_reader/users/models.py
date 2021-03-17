@@ -27,6 +27,11 @@ class User(AbstractUser):
         """
         Update feeds asynchronously
         to keep posts up-to-date
+
+        TODO:
+        This can be improved by using
+        a task that run in background
+        and updates the feeds.
         """
         from rss_reader.feeds.models import Feed
 
