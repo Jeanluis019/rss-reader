@@ -29,8 +29,7 @@ class FeedTestCaseMixin(SerializeMixin):
             'category': FeedCategory.objects.create(
                 user=self.user, name='Productivity').id,
             'url': 'https://www.lifehack.org/feed'
-        } 
-        self.created_feed_id = None
+        }
         self.client.force_authenticate(self.user)
         self.feed = self.client.post('/api/feeds/', self.feed_mockup)
 
@@ -89,3 +88,4 @@ class DeleteFeedTest(FeedTestCaseMixin, APITestCase):
 
 # TODO: Create a test for validate unique_together fields are working
 # TODO: Save the Feeds URL API in a variable
+# TODO: Make test for custom feed name

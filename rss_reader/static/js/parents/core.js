@@ -6,6 +6,7 @@ new Vue({
   data: {
     currentUser: null,
     subscribedFeeds: [],
+    subscribedFeedsFetched: false,
     selectedFeed: {},
     selectedPost: null
   },
@@ -26,6 +27,7 @@ new Vue({
         if (this.subscribedFeeds.length > 0) {
           this.selectFeed(this.subscribedFeeds[0].id);
         }
+        this.subscribedFeedsFetched = true;
       });
     },
     selectFeed(feedId) {

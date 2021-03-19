@@ -18,5 +18,8 @@ django-redis==4.12.1  # https://github.com/jazzband/django-redis
 djangorestframework==3.12.2  # https://github.com/encode/django-rest-framework
 django-cors-headers==3.7.0 # https://github.com/adamchainz/django-cors-headers
 
-# Parser feeds (RSS Channels)
+# Feeds parser (RSS Channels)
 feedparser==6.0.2
+
+# Run tasks in background
+django-background-tasks==1.2.5

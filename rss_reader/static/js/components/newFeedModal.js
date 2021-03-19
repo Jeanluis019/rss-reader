@@ -26,7 +26,8 @@ Vue.component('new-feed-modal', {
             <div class="uk-margin">
               <label class="uk-form-label" for="form-stacked-text">Name</label>
               <div class="uk-form-controls">
-                <input class="uk-input" id="feed-name" type="text" v-model="feed.name" placeholder="Name" required>
+                <input class="uk-input" id="feed-name" type="text" v-model="feed.name" placeholder="Name">
+                <small style="color:gray;">* Leave blank to get default Name from Feed's URL</small>
               </div>
             </div>
 
@@ -78,7 +79,7 @@ Vue.component('new-feed-modal', {
           this.isSendingData = false;
 
           if (response.ok) {
-            this.$parent.getSubscribedFeeds();
+            this.$emit('feed:add', response.data);
             UIkit.modal('#add-new-feed-modal').hide();
             UIkit.notification({message: 'Feed added!', status: 'primary'});
 

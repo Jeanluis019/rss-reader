@@ -9,8 +9,6 @@ from django.contrib.auth import get_user_model # noqa
 from django.utils import timezone # noqa
 from django.conf import settings # noqa
 
-from asgiref.sync import sync_to_async # noqa
-
 from rest_framework import status # noqa
 
 logger = logging.getLogger(__name__)
@@ -40,7 +38,11 @@ class Feed(models.Model):
         verbose_name=_('Owner'),
         related_name='feeds',
         on_delete=models.CASCADE)
-    name = models.CharField(verbose_name=_('Name'), max_length=50)
+    name = models.CharField(
+        verbose_name=_('Name'),
+        max_length=50,
+        blank=True,
+        null=True)
     category = models.ForeignKey(
         FeedCategory,
         verbose_name=_('Category'), 
@@ -61,7 +63,7 @@ class Feed(models.Model):
         unique_together = ['user', 'url']
 
     def __str__(self):
-        return self.name
+        return f"{self.name} | Owner: {self.user.username}"
 
     @staticmethod
     def does_feed_exist(user, feed_url):
@@ -73,7 +75,7 @@ class Feed(models.Model):
             user=user, url=feed_url).exists()
 
     @staticmethod
-    async def is_url_valid(url):
+    def is_url_valid(url):
         """
         Check that Feed's URL is valid and
         log any errors if there are any.
@@ -88,44 +90,39 @@ class Feed(models.Model):
             if feed.get('status') == status.HTTP_200_OK:
                 return feed
 
-            debug_message = debug_message.replace(
-                "Reason: {error}", f"Status Code: {feed.get('status')}")
+            logger.debug(debug_message.replace(
+                "Reason: {error}", f"Status Code: {feed.get('status')}"))
         except (URLError, Exception) as error:
-            debug_message = debug_message.format(error=error.reason)
+            logger.debug(debug_message.format(error=error.reason))
 
-        logger.debug(debug_message)
         return False
 
     def does_can_update_posts(self):
         """
+        TODO: Call this method since is not being used
+
         This function determines if we
-        can update feed's posts.
+        can update the feed's posts.
         """
         if not self.last_date_updated:
             return True
 
         seconds = (timezone.now() - self.last_date_updated).seconds
         passed_hours = seconds // (60*60)
-        if passed_hours >= settings.HOURS_FOR_UPDATE_POSTS:
+        if passed_hours >= settings.MINUTES_FOR_UPDATE_POSTS:
             return True
         return False
 
-    @staticmethod
-    @sync_to_async
-    def update_posts(feed_id, posts):
-        feed = Feed.objects.get(id=feed_id)
-        feed.posts = posts[:settings.POSTS_QUANTITY_TO_GET]
-        feed.last_date_updated = timezone.now()
-        feed.save()
-
-    @staticmethod
-    async def fetch_latest_posts(loop, user_feeds):
+    def fetch_latest_posts(self):
         """
-        Iterate over the given feed's list in
-        order to get the latest posts and keep
+        Call the Feed's URL in order to
+        get the latest posts and keep
         our database up-to-date
         """
-        for user_feed in user_feeds:
-            if feed_data := await Feed.is_url_valid(user_feed['url']):
-                await Feed.update_posts(user_feed['id'], feed_data['entries'])
+        if feed_data := Feed.is_url_valid(self.url):
+            posts = feed_data['entries']
+            self.posts = posts[:settings.POSTS_QUANTITY_TO_GET]
+            self.last_date_updated = timezone.now()
+            self.save()
 
+            return feed_data

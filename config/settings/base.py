@@ -74,6 +74,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "corsheaders",
+    "background_task"
 ]
 
 LOCAL_APPS = [
@@ -296,8 +297,12 @@ REST_FRAMEWORK = {
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup
 CORS_URLS_REGEX = r"^/api/.*$"
 
-# Time to wait for updating Feeds' posts (in hours)
-HOURS_FOR_UPDATE_POSTS = 2
+# Verbose name to identify the task
+UPDATE_POSTS_TASK_VERBOSE_NAME = 'UPDATE_POSTS'
 
-# How many posts should we get from the Feeds? (Default=20)
-POSTS_QUANTITY_TO_GET = env.bool("POSTS_QUANTITY_TO_GET", 20)
+# Minutes to wait for updating Feeds' posts (default=120)
+MINUTES_FOR_UPDATE_POSTS = env.int("MINUTES_FOR_UPDATE_POSTS", 120)
+SECONDS_FOR_UPDATE_POSTS = MINUTES_FOR_UPDATE_POSTS * 60
+
+# How many posts should we get from the Feeds? (default=20)
+POSTS_QUANTITY_TO_GET = env.int("POSTS_QUANTITY_TO_GET", 20)

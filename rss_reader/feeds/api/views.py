@@ -17,7 +17,4 @@ class FeedViewSet(viewsets.ModelViewSet):
     queryset = Feed.objects.all()
 
     def get_queryset(self, *args, **kwargs):
-        # Check if user's feeds needs a update
-        self.request.user.update_feed_posts()
-
         return self.queryset.filter(user=self.request.user.id)

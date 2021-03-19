@@ -3,7 +3,7 @@
 
 {% block content %}
   <div id="core-page">
-    {% if not request.user.feeds.count %}
+    <template v-if="subscribedFeedsFetched && subscribedFeeds.length == 0">
       <div class="uk-text-center uk-margin-large-top">
         <img src="{% static 'images/newspaper.svg' %}" width="220px" />
         <h2 class="uk-text-bold uk-margin-top uk-margin-remove-bottom">Create your first Feed</h2>
@@ -11,7 +11,9 @@
 
         <a class="uk-button uk-button-primary uk-margin-top" href="#add-new-feed-modal" uk-toggle>+ Add a new Feed</a>
       </div>
-    {% else %}
+    </template>
+
+    <template v-else-if="subscribedFeedsFetched">
       <div class="uk-grid uk-child-width-1-1 uk-child-width-1-2@m">
         <subscribed-feeds-section 
           :subscribed-feeds="subscribedFeeds"
@@ -27,6 +29,9 @@
       </div>
       
       <h2 class="uk-margin-medium-top">Latest posts</h2>
+      <template v-if="!selectedFeed.posts">
+        <p>This Feed has no posts.</p>
+      </template>
 
       <div class="feed-posts-section uk-margin-large-bottom uk-grid-match" uk-grid>
         <feed-post
@@ -38,7 +43,7 @@
         >
         </feed-post>
       </div>
-    {% endif %}
+    </template>
 
     <read-post-modal
       v-if="selectedPost"
@@ -47,7 +52,8 @@
 
     <new-feed-modal
       v-if="currentUser"
-      :current-user-id="currentUser.id">
+      :current-user-id="currentUser.id"
+      v-on:feed:add="addFeed">
     </new-feed-modal>
   </div>
 {% endblock content %}

@@ -1,9 +1,6 @@
-import feedparser # noqa
+import feedparser
 
-from asgiref.sync import async_to_sync # noqa
-
-from rest_framework import serializers # noqa
-from rest_framework.validators import UniqueTogetherValidator # noqa
+from rest_framework import serializers
 
 from rss_reader.users.models import User
 from rss_reader.feeds.models import Feed
@@ -18,15 +15,35 @@ class FeedSerializer(serializers.ModelSerializer):
         """
         Check that the feed's url is valid.
         """
+
+        # This validation is only necessary when 
+        # making POST requests (creating feeds)
+        if self.context['request'].method != 'POST':
+            return value
+
         user_id = int(self.initial_data.get('user'))
         user = User.objects.get(id=user_id)
 
         if Feed.does_feed_exist(user, value):
             raise serializers.ValidationError(
-                'You added this Feed before.')
+                'You already added this Feed.')
 
-        is_url_valid_sync = async_to_sync(Feed.is_url_valid)
-        if not is_url_valid_sync(value):
+        if not Feed.is_url_valid(value):
             raise serializers.ValidationError(
                 'This URL is invalid.')
         return value
+
+    def create(self, validated_data):
+        """
+        Override this method to get
+        the posts of current feed
+        after creating it
+        """
+        instance = super().create(validated_data)
+        feed_data = instance.fetch_latest_posts()
+
+        # If the user doesn't filled the 'name' field,
+        # then we can get the original feed's name
+        if not instance.name:
+            instance.name = feed_data['feed']['title']
+        return instance
