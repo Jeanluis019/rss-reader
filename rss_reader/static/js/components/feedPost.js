@@ -10,15 +10,15 @@ Vue.component('feed-post', {
           <p class="uk-margin-top" v-html="formatPostSummary()"></p>
         </div>
         <div class="uk-card-footer">
-          <span style="color: #333;">Autor:</span>
-          <span>{{ post.author }}</span>
+          <span style="color: #333; font-weight: 600;">Autor:</span>
+          <span>{{ post.author ? post.author : 'No data' }}</span>
         </div>
       </div>
     </div>
   `,
   methods: {
     formatPostSummary() {
-      return this.post.summary.slice(0, 150) + '...';
+      return this.post.summary ? this.post.summary.slice(0, 150) + '...' : 'No data';
     },
     readPost() {
       // Select the current post so the modal can get it

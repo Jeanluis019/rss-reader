@@ -97,22 +97,6 @@ class Feed(models.Model):
 
         return False
 
-    def does_can_update_posts(self):
-        """
-        TODO: Call this method since is not being used
-
-        This function determines if we
-        can update the feed's posts.
-        """
-        if not self.last_date_updated:
-            return True
-
-        seconds = (timezone.now() - self.last_date_updated).seconds
-        passed_hours = seconds // (60*60)
-        if passed_hours >= settings.MINUTES_FOR_UPDATE_POSTS:
-            return True
-        return False
-
     def fetch_latest_posts(self):
         """
         Call the Feed's URL in order to
