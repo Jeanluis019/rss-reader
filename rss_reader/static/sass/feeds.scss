@@ -25,8 +25,27 @@
 }
 
 .feed-posts-section {
-  .feed-post .uk-card:hover {
-    cursor: pointer;
+  .feed-post {
+    .uk-card {
+      &:hover {
+        cursor: pointer;
+      }
+
+      .feed-name-badge {
+        top: 8px;
+        left: 30px;
+        width: fit-content;
+        text-transform: none;
+      }
+
+      .uk-card-body {
+        padding: 35px 30px 12px;
+
+        .post-title {
+          font-size:1.2rem;
+        }
+      }
+    }
   }
 }
 
@@ -36,8 +55,13 @@
 
     svg {
       position: absolute;
-      left: 96vw;
-      top: 36px;
+      left: 91vw;
+      top: 23px;
+
+      @media (min-width: 768px) {
+        left: 96vw;
+        top: 36px;
+      }
     }
   }
 }

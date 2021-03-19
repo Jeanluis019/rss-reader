@@ -42,8 +42,9 @@ class FeedSerializer(serializers.ModelSerializer):
         instance = super().create(validated_data)
         feed_data = instance.fetch_latest_posts()
 
-        # If the user doesn't filled the 'name' field,
-        # then we can get the original feed's name
+        # Get original feed's name in case
+        # user didn't put a custom name
         if not instance.name:
             instance.name = feed_data['feed']['title']
+            instance.save()
         return instance
