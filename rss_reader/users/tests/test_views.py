@@ -4,8 +4,9 @@ from django.contrib import messages
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.messages.middleware import MessageMiddleware
 from django.contrib.sessions.middleware import SessionMiddleware
-from django.test import RequestFactory
+from django.test import RequestFactory, Client
 from django.urls import reverse
+from django.http.response import HttpResponseRedirect
 
 from rss_reader.users.forms import UserChangeForm
 from rss_reader.users.models import User
@@ -95,3 +96,13 @@ class TestUserDetailView:
 
         assert response.status_code == 302
         assert response.url == f"{login_url}?next=/fake-url/"
+
+
+def test_logout_view():
+    client = Client()
+    client.force_login(User.objects.create(username='testuser'))
+    response = client.get(reverse('users:logout'))
+    
+    # After logout it should redirect me to index view
+    assert response.status_code == 302
+    assert type(response) == HttpResponseRedirect

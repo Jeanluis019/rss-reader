@@ -1,12 +1,11 @@
 import feedparser # noqa
 
-# from django.test.testcases import SerializeMixin # noqa
-
 from rest_framework import status # noqa
 from rest_framework.test import APITestCase # noqa
 
 from rss_reader.users.models import User
 from rss_reader.feeds.models import Feed, FeedCategory
+from rss_reader.feeds.api.serializers import FeedSerializer
 
 
 class FeedTestCase(APITestCase):
@@ -129,7 +128,17 @@ class FeedTestCase(APITestCase):
         self.assertIsInstance(response_json['posts'], list)
         self.assertGreater(len(response_json['posts']), 0)    
 
-# TODO: Test the background task for updating feed's posts
-# TODO: Test creating feed with bad url
-# TODO: Test IndexView
-# TODO: Test LogoutView
+    def test_invalid_url(self):
+        """
+        If the feed's url is invalid, we need
+        to make sure the API returns a error
+        message and doesn't create the Feed
+        """
+        # Use the default feed mockup and change the url
+        mockup = self.feed_mockup
+        mockup['url'] = 'https://www.politico.com/rss/bad_url.xml'
+
+        response = self.client.post(self.BASE_API_URL, mockup)
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.json().get('url')[0], FeedSerializer.INVALID_URL_MESSAGE)

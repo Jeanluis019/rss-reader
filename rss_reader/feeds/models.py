@@ -28,9 +28,6 @@ class FeedCategory(models.Model):
         verbose_name = _('Category')
         verbose_name_plural = _('Categories')
 
-    def __str__(self):
-        return self.name
-
 
 class Feed(models.Model):
     user = models.ForeignKey(
@@ -61,9 +58,6 @@ class Feed(models.Model):
         verbose_name = _('Feed')
         verbose_name_plural = _('Feeds')
         unique_together = ['user', 'url']
-
-    def __str__(self):
-        return f"{self.name} | Owner: {self.user.username}"
 
     @staticmethod
     def does_feed_exist(user, feed_url):

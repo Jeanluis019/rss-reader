@@ -7,6 +7,8 @@ from rss_reader.feeds.models import Feed
 
 
 class FeedSerializer(serializers.ModelSerializer):
+    INVALID_URL_MESSAGE = 'This URL is invalid.'
+
     class Meta:
         model = Feed
         fields = '__all__'
@@ -30,7 +32,7 @@ class FeedSerializer(serializers.ModelSerializer):
 
         if not Feed.is_url_valid(value):
             raise serializers.ValidationError(
-                'This URL is invalid.')
+                self.INVALID_URL_MESSAGE)
         return value
 
     def create(self, validated_data):
