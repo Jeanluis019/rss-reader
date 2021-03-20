@@ -35,7 +35,7 @@ Vue.component('new-feed-modal', {
               <label class="uk-form-label" for="feed-category">Category</label>
               <div class="uk-form-controls">
                 <select class="uk-select" id="feed-category" v-model="feed.category">
-                  <option :value="null">Ninguna</option>
+                  <option :value="null" selected>News</option>
                 </select>
               </div>
             </div>

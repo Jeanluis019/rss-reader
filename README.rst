@@ -13,13 +13,47 @@ An Awesome RSS Reader!
 
 :License: MIT
 
+Technologies
+^^^^^^^^^^^^
+* Python 3.8
+* Django 3.1
+* PostgreSQL 12.5
+* Vue.js 2
+* UIkit 3.6
+* SASS
 
-Settings
---------
 
-Moved to settings_.
+Dev Setup
+^^^^^^^^^
 
-.. _settings: http://cookiecutter-django.readthedocs.io/en/latest/settings.html
+1. Clone repo::
+
+    $ git clone https://github.com/Jeanluis019/rss-reader
+
+2. Install Django requirements::
+
+    $ pip install -r requirements/local.txt
+
+3. Create a PostgreSQL database named rss_reader::
+
+    $ psql
+    $ CREATE DATABASE rss_reader;
+
+4. Run Django migrations::
+
+    $ python manage.py migrate
+
+5. Install npm packages (Necessary for compiling SASS to CSS files, live reloading, etc) -- You can skip this step if you will not modify the SASS files::
+
+    $ npm install
+
+6. Run server::
+
+    # Use this if you didn't install the npm packages:
+    $ python manage.py runserver
+
+    # Use this if you installed the npm packages:
+    $ npm run dev
 
 Basic Commands
 --------------
@@ -35,14 +69,6 @@ Setting Up Your Users
 
 For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
 
-Type checks
-^^^^^^^^^^^
-
-Running type checks with mypy:
-
-::
-
-  $ mypy rss_reader
 
 Test coverage
 ^^^^^^^^^^^^^
@@ -53,12 +79,20 @@ To run the tests, check your test coverage, and generate an HTML coverage report
     $ coverage html
     $ open htmlcov/index.html
 
-Running tests with py.test
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Running all tests with py.test
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 ::
 
   $ pytest
+
+Running a specific test
+^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+  $ python manage.py test feeds.tests.test_api
 
 Live reloading and Sass CSS compilation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -71,10 +105,7 @@ Moved to `Live reloading and SASS compilation`_.
 
 
 
-Deployment
-----------
 
-The following details how to deploy this application.
 
 
 
