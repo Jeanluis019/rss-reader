@@ -94,6 +94,14 @@ Running a specific test
 
   $ python manage.py test feeds.tests.test_api
 
+Some RSS Channels
+^^^^^^^^^^^^^^^^^
+
+These are some of the RSS feeds that I used in the app:
+
+* https://www.lifehack.org/feed
+* https://www.politico.com/rss/politicopicks.xml
+
 Live reloading and Sass CSS compilation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
