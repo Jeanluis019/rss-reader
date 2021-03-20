@@ -13,6 +13,14 @@ An Awesome RSS Reader!
 
 :License: MIT
 
+Live Example of the App
+^^^^^^^^^^^^^^^^^^^^^^^
+
+You can use this live example to use the app::
+
+    https://rss-reaader.herokuapp.com
+
+
 Technologies
 ^^^^^^^^^^^^
 * Python 3.8
