@@ -29,3 +29,15 @@ class FeedsConfig(AppConfig):
             update_feeds_posts(
                 repeat=settings.SECONDS_FOR_UPDATE_POSTS,
                 verbose_name=settings.UPDATE_POSTS_TASK_VERBOSE_NAME)
+        except Exception:
+            """
+            This error occurs when trying to run
+            the background_task migrations
+            the first time.
+
+            This happens because the 'Task' model
+            has not yet been created because the
+            migrations have not run. So this should not
+            happen after running migrations.
+            """
+            pass
